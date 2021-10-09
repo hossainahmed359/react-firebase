@@ -18,15 +18,15 @@ function App() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(false);
   const [error, setError] = useState('');
   // console.log(name, email, password)
 
   //Name Function
   const handleName = e => {
     setName(e.target.value)
-
   }
+
   //Email Function
   const handleEmail = e => {
     setEmail(e.target.value)
@@ -36,10 +36,12 @@ function App() {
   const handlePassword = e => {
     setPassword(e.target.value)
   }
+
   //Check Login
   const toggleLogin = e => {
     setIsLogin(e.target.checked)
   }
+
   // Set User Name
   const setUserName = () => {
     updateProfile(auth.currentUser, { displayName: name })
@@ -52,6 +54,7 @@ function App() {
         // ...
       });
   }
+
   //Verify Email
   const verifyEmail = () => {
     sendEmailVerification(auth.currentUser)
@@ -62,9 +65,10 @@ function App() {
       .catch(error => console.log(error))
   }
 
-  /* Handle Registration */
+  /* ****************** Create Account ****************** */
+
   const handleRegistration = e => {
-    //Prevent Default Reloadin behavior
+    //Prevent Default Reloading behavior
     e.preventDefault();
     // console.log(1)
     if (password.length < 6) {
@@ -95,6 +99,7 @@ function App() {
 
       });
   }
+
   /* Handle Login */
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -108,6 +113,7 @@ function App() {
         setError(error.message);
       });
   }
+
   // Reset Password
   const resetPassword = () => {
     sendPasswordResetEmail(auth, email)
@@ -172,7 +178,7 @@ function App() {
             </div>
             <div className="col-12">
               <button type="submit" className="btn btn-primary mb-2">Submit</button>
-              <button onClick={resetPassword} type='button' className="btn btn-warning mx-5 mb-2">Reset Password</button>
+              <button onClick={resetPassword} className="btn btn-warning mx-5 mb-2">Reset Password</button>
               <p className=" text-muted">Or</p>
               {/* GOOGlE Sign In */}
               <button onClick={handleGoogleSignIn} className="btn btn-primary">Continue with Google</button>

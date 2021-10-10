@@ -1,5 +1,5 @@
 import './App.css';
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, signInWithEmailAndPassword, sendPasswordResetEmail, FacebookAuthProvider, signOut } from "firebase/auth";
 import initializeAuthentication from './Firebase/firebase.init';
 import { useState } from 'react';
 
@@ -7,6 +7,8 @@ import { useState } from 'react';
 initializeAuthentication()
 //google provider
 const googleProvider = new GoogleAuthProvider();
+//Facebook Provider
+const facebookProvider = new FacebookAuthProvider();
 
 /* ********************************* APP ********************************* */
 function App() {
@@ -143,7 +145,33 @@ function App() {
         setError(error.message)
       });
   }
+  /* Facebook Sign in */
+  const handleFacebookSignIn = () => {
+    signInWithPopup(auth, facebookProvider)
+      .then((result) => {
+        // The signed-in user info.
+        console.log(result.user);
 
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        setError(error.message)
+      });
+  }
+  /* Sign out */
+  const handleSignOut = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      console.log('Signed Out')
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
   //
   return (
     <div className="">
@@ -179,9 +207,11 @@ function App() {
             <div className="col-12">
               <button type="submit" className="btn btn-primary mb-2">Submit</button>
               <button onClick={resetPassword} className="btn btn-warning mx-5 mb-2">Reset Password</button>
+              <button onClick={handleSignOut} className="btn btn-danger mx-5 mb-2">Sign Out</button>
               <p className=" text-muted">Or</p>
               {/* GOOGlE Sign In */}
-              <button onClick={handleGoogleSignIn} className="btn btn-primary">Continue with Google</button>
+              <button onClick={handleGoogleSignIn} className="btn btn-outline-success">Continue with Google</button>
+              <button onClick={handleFacebookSignIn} className="mx-2 btn btn-outline-primary">Continue with Facebook</button>
             </div>
           </form>
         </div>
